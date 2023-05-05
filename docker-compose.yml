@@ -1,14 +1,43 @@
 version: '3'
 services:
-  app:
+  nextcloud-app:
     container_name: app-server
     image: nextcloud:fpm
+    depends_on:
+      - nextcloud_db
+      - nextcloud_redis
     restart: always
     expose:
       - '80'
       - '9000'
     volumes:
       - app_data:/var/www/html
+    environment:
+      - MYSQL_HOST=nextcloud_db
+      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
+      - REDIS_HOST=nextcloud_redis
+      - REDIS_HOST_PORT=6379
+
+  nextcloud_db:
+    image: mariadb:10.6
+    container_name: nextcloud_db
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - ./nextcloud-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=$NEXTCLOUD_MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
+
+  nextcloud_redis:
+    image: redis:latest
+    container_name: nextcloud_redis
+    restart: always
+
   onlyoffice-document-server:
     container_name: onlyoffice-document-server
     image: onlyoffice/documentserver:latest
