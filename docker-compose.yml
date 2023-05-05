@@ -1,7 +1,6 @@
 version: '3'
 services:
   nextcloud-app:
-    container_name: app-server
     image: nextcloud:fpm
     depends_on:
       - nextcloud_db
@@ -11,7 +10,7 @@ services:
       - '80'
       - '9000'
     volumes:
-      - app_data:/var/www/html
+      - nextcloud_app_data:/var/www/html
     environment:
       - MYSQL_HOST=nextcloud_db
       - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
@@ -26,7 +25,7 @@ services:
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - ./nextcloud-db:/var/lib/mysql
+      - nextcloud-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=$NEXTCLOUD_MYSQL_ROOT_PASSWORD
       - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
@@ -37,6 +36,23 @@ services:
     image: redis:latest
     container_name: nextcloud_redis
     restart: always
+
+  nextcloud_cron:
+    image: nextcloud:fpm
+    restart: always
+    depends_on:
+      - nextcloud_db
+      - nextcloud_redis
+    volumes:
+      - nextcloud_app_data:/var/www/html
+    environment:
+      - MYSQL_HOST=nextcloud_db
+      - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
+      - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
+      - MYSQL_PASSWORD=$NEXTCLOUD_MYSQL_PASSWORD
+      - REDIS_HOST=nextcloud_redis
+      - REDIS_HOST_PORT=6379
+    entrypoint: /cron.sh
 
   onlyoffice-document-server:
     container_name: onlyoffice-document-server
@@ -50,6 +66,7 @@ services:
     volumes:
       - document_data:/var/www/onlyoffice/Data
       - document_log:/var/log/onlyoffice
+
   nginx:
     container_name: nginx-server
     image: nginx
@@ -63,5 +80,5 @@ services:
 volumes:
   document_data:
   document_log:
-  app_data:
-  mysql_data:
+  nextcloud_app_data:
+  nextcloud-db:
