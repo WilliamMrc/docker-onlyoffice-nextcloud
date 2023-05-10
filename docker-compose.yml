@@ -14,6 +14,7 @@ services:
       - nextcloud_app_data:/var/www/html:rw
       - ./nextcloud_config:/var/www/html/config:rw
     environment:
+      - SERVICE_HOST=$SERVICE_HOST
       - MYSQL_HOST=nextcloud_db
       - MYSQL_DATABASE=$NEXTCLOUD_MYSQL_DATABASE
       - MYSQL_USER=$NEXTCLOUD_MYSQL_USER
