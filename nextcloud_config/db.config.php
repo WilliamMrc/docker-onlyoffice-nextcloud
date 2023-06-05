@@ -1,6 +1,7 @@
 <?php
 $CONFIG = array (
-'dbname' => getenv('MYSQL_DATABASE'),
+  'dbtype' => 'mysql',
+  'dbname' => getenv('MYSQL_DATABASE'),
   'dbhost' => 'nextcloud_db',
   'dbport' => '',
   'dbtableprefix' => 'oc_',
