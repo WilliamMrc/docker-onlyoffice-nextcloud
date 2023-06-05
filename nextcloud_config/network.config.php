@@ -6,4 +6,5 @@ $CONFIG = array (
     0 => $host,
   ),
   'overwrite.cli.url' => 'http://' . $host,
+  'trusted_proxies' => ['nginx-server'],
 );
