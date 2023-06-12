@@ -11,8 +11,6 @@ $CONFIG = array (
  * to require a password. See http://redis.io/topics/security
  * for more information.
  *
- * We also support redis SSL/TLS encryption as of version 6.
- * See https://redis.io/topics/encryption for more information.
  */
 'redis' => [
 	'host' => getenv('REDIS_HOST'),

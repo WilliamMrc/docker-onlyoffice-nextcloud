@@ -2,7 +2,7 @@
 $CONFIG = array (
   'dbtype' => 'mysql',
   'dbname' => getenv('MYSQL_DATABASE'),
-  'dbhost' => 'nextcloud_db',
+  'dbhost' => getenv('MYSQL_HOST'),
   'dbport' => '',
   'dbtableprefix' => 'oc_',
   'mysql.utf8mb4' => true,
