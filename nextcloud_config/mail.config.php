@@ -10,4 +10,5 @@ $CONFIG = array (
   "mail_smtppassword" => getenv('SMTP_PASSWORD'),
   'mail_from_address' => getenv('MAIL_FROM_ADDRESS'),
   'mail_domain'       => getenv('MAIL_DOMAIN'),
+  'default_phone_region' => 'FR'
 );
