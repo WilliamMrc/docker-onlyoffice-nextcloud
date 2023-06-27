@@ -13,6 +13,7 @@ services:
     volumes:
       - nextcloud_app_data:/var/www/html:rw
       - ./nextcloud_config:/var/www/html/config:rw
+      - ./php-fpm/www2.conf:/usr/local/etc/php-fpm.d/www2.conf:ro
     environment:
       - SERVICE_HOST=$SERVICE_HOST
       - NEXTCLOUD_ADMIN_USER=$NEXTCLOUD_ADMIN_USER
